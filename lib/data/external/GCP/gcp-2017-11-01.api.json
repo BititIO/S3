@@ -44,6 +44,72 @@
                 }
             }
         },
+        "CreateBucket": {
+            "http": {
+                "method": "PUT",
+                "requestUri": "/{Bucket}"
+            },
+            "input": {
+                "type": "structure",
+                "required": [
+                    "Bucket"
+                ],
+                "members": {
+                    "ACL": {
+                        "location": "header",
+                        "locationName": "x-goog-acl"
+                    },
+                    "Bucket": {
+                        "location": "uri",
+                        "locationName": "Bucket"
+                    },
+                    "CreateBucketConfiguration": {
+                        "locationName": "CreateBucketConfiguration",
+                        "type": "structure",
+                        "members": {
+                            "LocationConstraint": {},
+                            "StorageClass": {}
+                        }
+                    },
+                    "ProjectId": {
+                        "location": "header",
+                        "locationName": "x-goog-project-id"
+                    }
+                },
+                "payload": "CreateBucketConfiguration"
+            },
+            "output": {
+                "type": "structure",
+                "members": {
+                    "MetaVersionId": {
+                        "location": "header",
+                        "locationName": "x-goog-metageneration"
+                    }
+                }
+            }
+        },
+        "DeleteBucket": {
+            "http": {
+                "method": "DELETE",
+                "requestUri": "/{Bucket}"
+            },
+            "input": {
+                "type": "structure",
+                "required": [
+                    "Bucket"
+                ],
+                "members": {
+                    "Bucket": {
+                        "location": "uri",
+                        "locationName": "Bucket"
+                    },
+                    "ProjectId": {
+                        "location": "header",
+                        "locationName": "x-goog-project-id"
+                    }
+                }
+            }
+        },
         "listObjects": {
             "http": {
                 "method": "GET",
@@ -157,6 +223,79 @@
                 "type": "structure",
                 "members": {
                     "Status": {}
+                }
+            }
+        },
+        "PutBucketAclReq": {
+            "http": {
+                "method": "PUT",
+                "requestUri": "/{Bucket}?acl"
+            },
+            "input": {
+                "type": "structure",
+                "required": [
+                    "Bucket"
+                ],
+                "members": {
+                    "ACL": {
+                        "location": "header",
+                        "locationName": "x-goog-acl"
+                    },
+                    "AccessControlPolicy": {
+                        "locationName": "AccessControlList",
+                        "type": "structure",
+                        "members": {
+                            "Owner": {
+                                "shape": "OwnerShape"
+                            },
+                            "Grants": {
+                                "shape": "ACLShape"
+                            }
+                        }
+                    },
+                    "Bucket": {
+                        "location": "uri",
+                        "locationName": "Bucket"
+                    },
+                    "ProjectId": {
+                        "location": "header",
+                        "locationName": "x-goog-project-id"
+                    }
+                },
+                "payload": "AccessControlPolicy"
+            }
+        },
+        "GetBucketAcl": {
+            "http": {
+                "method": "GET",
+                "requestUri": "/{Bucket}?acl"
+            },
+            "input": {
+                "type": "structure",
+                "required": [
+                    "Bucket"
+                ],
+                "members": {
+                    "Bucket": {
+                        "location": "uri",
+                        "locationName": "Bucket"
+                    },
+                    "ProjectId": {
+                        "location": "header",
+                        "locationName": "x-goog-project-id"
+                    }
+                }
+            },
+            "output": {
+                "type": "structure",
+                "members": {
+                    "Owner": {
+                        "shape": "OwnerShape"
+                    },
+                    "Grants": {
+                        "locationName": "AccessControlList",
+                        "shape": "ACLShape"
+                    }
                 }
             }
         },
@@ -625,7 +764,7 @@
             "type": "structure",
             "members": {
                 "ID": {},
-                "DisplayName": {}
+                "Name": {}
             }
         },
         "ContentsShape": {
@@ -658,6 +797,36 @@
                 }
             },
             "flattened": true
+        },
+        "ACLShape": {
+            "locationName": "Entries",
+            "type": "list",
+            "member": {
+                "locationName": "Entry",
+                "type": "structure",
+                "members": {
+                    "Grantee": {
+                        "locationName": "Scope",
+                        "type": "structure",
+                        "required": [
+                            "Type"
+                        ],
+                        "members": {
+                            "DisplayName": {
+                                "locationName": "Name"
+                            },
+                            "ID": {},
+                            "EmailAddress": {},
+                            "Domain": {},
+                            "Type": {
+                                "locationName": "type",
+                                "xmlAttribute": true
+                            }
+                        }
+                    },
+                    "Permission": {}
+                }
+            }
         }
     }
 }
